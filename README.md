@@ -38,7 +38,7 @@ The package is built on top of [Laravel Mails](https://github.com/backstagephp/l
 You can install the package via composer:
 
 ```bash
-composer require backstage/filament-mails
+composer require vormkracht10/filament-mails
 ```
 
 You can publish and run the migrations with:
