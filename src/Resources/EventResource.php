@@ -2,9 +2,9 @@
 
 namespace Backstage\FilamentMails\Resources;
 
+use Backstage\FilamentMails\FilamentMailsPlugin;
 use Backstage\FilamentMails\Resources\EventResource\Pages\ListEvents;
 use Backstage\FilamentMails\Resources\EventResource\Pages\ViewEvent;
-use Backstage\FilamentMails\FilamentMailsPlugin;
 use Backstage\Mails\Enums\EventType;
 use Backstage\Mails\Models\MailEvent;
 use Filament\Actions\BulkActionGroup;
