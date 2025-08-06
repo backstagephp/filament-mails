@@ -4,6 +4,7 @@ namespace Backstage\FilamentMails\Resources;
 
 use Backstage\FilamentMails\Resources\EventResource\Pages\ListEvents;
 use Backstage\FilamentMails\Resources\EventResource\Pages\ViewEvent;
+use Backstage\FilamentMails\FilamentMailsPlugin;
 use Backstage\Mails\Enums\EventType;
 use Backstage\Mails\Models\MailEvent;
 use Filament\Actions\BulkActionGroup;
@@ -23,6 +24,11 @@ class EventResource extends Resource
     protected static bool $isScopedToTenant = false;
 
     protected static bool $shouldRegisterNavigation = true;
+
+    public static function canAccess(): bool
+    {
+        return FilamentMailsPlugin::get()->userCanManageMails();
+    }
 
     public static function getSlug(?Panel $panel = null): string
     {

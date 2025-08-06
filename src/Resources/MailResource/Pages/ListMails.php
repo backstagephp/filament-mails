@@ -4,6 +4,7 @@ namespace Backstage\FilamentMails\Resources\MailResource\Pages;
 
 use Backstage\FilamentMails\Resources\MailResource;
 use Backstage\FilamentMails\Resources\MailResource\Widgets\MailStatsWidget;
+use Backstage\FilamentMails\FilamentMailsPlugin;
 use Backstage\Mails\Models\Mail;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -11,6 +12,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ListMails extends ListRecords
 {
+    public static function canAccess(array $parameters = []): bool
+    {
+        return FilamentMailsPlugin::get()->userCanManageMails();
+    }
+
     public static function getResource(): string
     {
         return config('filament-mails.resources.mail', MailResource::class);
