@@ -2,8 +2,8 @@
 
 namespace Backstage\FilamentMails\Resources;
 
-use Backstage\FilamentMails\Resources\SuppressionResource\Pages\ListSuppressions;
 use Backstage\FilamentMails\FilamentMailsPlugin;
+use Backstage\FilamentMails\Resources\SuppressionResource\Pages\ListSuppressions;
 use Backstage\Mails\Enums\EventType;
 use Backstage\Mails\Enums\Provider;
 use Backstage\Mails\Events\MailUnsuppressed;

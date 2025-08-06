@@ -2,9 +2,9 @@
 
 namespace Backstage\FilamentMails\Resources\MailResource\Pages;
 
+use Backstage\FilamentMails\FilamentMailsPlugin;
 use Backstage\FilamentMails\Resources\MailResource;
 use Backstage\FilamentMails\Resources\MailResource\Widgets\MailStatsWidget;
-use Backstage\FilamentMails\FilamentMailsPlugin;
 use Backstage\Mails\Models\Mail;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;

@@ -5,11 +5,11 @@ namespace Backstage\FilamentMails;
 use Backstage\FilamentMails\Resources\EventResource;
 use Backstage\FilamentMails\Resources\MailResource;
 use Backstage\FilamentMails\Resources\SuppressionResource;
+use Closure;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\Support\Colors\Color;
 use Filament\Support\Concerns\EvaluatesClosures;
-use Closure;
 
 class FilamentMailsPlugin implements Plugin
 {
