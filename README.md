@@ -85,6 +85,38 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+### Security
+
+Using the `canManageMails()` method, you can define which users have access to the mail resources/pages. Here's a comprehensive example that includes additional logic for flexibility:
+
+```php
+use Backstage\FilamentMails\FilamentMailsPlugin;
+use Illuminate\Support\Facades\Auth;
+
+$panel
+    ->plugins([
+        FilamentMailsPlugin::make()
+            ->canManageMails(function () {
+                $user = Auth::user();
+
+                // Allow access for users with specific roles
+                if ($user->hasRole('admin') || $user->hasRole('supervisor')) {
+                    return true;
+                }
+
+                // Allow access for users with specific permissions
+                if ($user->hasPermissionTo('manage mails')) {
+                    return true;
+                }
+
+                // Restrict access for all other users
+                return false;
+            }),
+    ]);
+```
+
+This example demonstrates how to combine role-based and permission-based access control, providing a more robust and flexible approach to managing access to mail resources.
+
 ### Tenant middleware and route protection
 
 If you want to protect the mail routes with your (tenant) middleware, you can do so by adding the routes to the `tenantRoutes`:

@@ -2,6 +2,7 @@
 
 namespace Backstage\FilamentMails\Resources\EventResource\Pages;
 
+use Backstage\FilamentMails\FilamentMailsPlugin;
 use Backstage\FilamentMails\Resources\EventResource;
 use Backstage\Mails\Enums\EventType;
 use Backstage\Mails\Models\MailEvent;
@@ -11,6 +12,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ListEvents extends ListRecords
 {
+    public static function canAccess(array $parameters = []): bool
+    {
+        return FilamentMailsPlugin::get()->userCanManageMails();
+    }
+
     public static function getResource(): string
     {
         return config('filament-mails.resources.event', EventResource::class);

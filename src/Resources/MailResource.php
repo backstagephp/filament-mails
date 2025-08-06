@@ -2,6 +2,7 @@
 
 namespace Backstage\FilamentMails\Resources;
 
+use Backstage\FilamentMails\FilamentMailsPlugin;
 use Backstage\FilamentMails\Resources\MailResource\Pages\ListMails;
 use Backstage\FilamentMails\Resources\MailResource\Pages\ViewMail;
 use Backstage\FilamentMails\Resources\MailResource\Widgets\MailStatsWidget;
@@ -44,6 +45,11 @@ class MailResource extends Resource
     protected static bool $isScopedToTenant = false;
 
     protected static bool $shouldRegisterNavigation = true;
+
+    public static function canAccess(): bool
+    {
+        return FilamentMailsPlugin::get()->userCanManageMails();
+    }
 
     public static function getModel(): string
     {
