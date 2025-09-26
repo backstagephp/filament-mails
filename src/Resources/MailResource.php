@@ -58,7 +58,7 @@ class MailResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Emails');
+        return config('filament-mails.navigation.group', __('Emails'));
     }
 
     public static function getNavigationLabel(): string
