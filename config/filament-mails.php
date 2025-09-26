@@ -13,5 +13,6 @@ return [
 
     'navigation' => [
         'group' => null,
+        'sort' => null,
     ],
 ];
