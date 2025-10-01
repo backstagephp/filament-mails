@@ -2,6 +2,18 @@
 
 All notable changes to `filament-mails` will be documented in this file.
 
+## Added navigation sort config option - 2025-10-01
+
+### What's Changed
+
+* feat: add navigation sort configuration to MailResource by @somegooser in https://github.com/backstagephp/filament-mails/pull/60
+
+### New Contributors
+
+* @somegooser made their first contribution in https://github.com/backstagephp/filament-mails/pull/60
+
+**Full Changelog**: https://github.com/backstagephp/filament-mails/compare/v3.0.4...v3.0.5
+
 ## v3.0.0 - 2025-06-24
 
 ### Breaking changes
