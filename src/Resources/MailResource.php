@@ -47,27 +47,27 @@ class MailResource extends Resource
 
     public static function getNavigationGroup(): ?string
     {
-        return __('Emails');
+        return __(config('filament-mails.navigation.group') ?? 'Emails');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('Emails');
+        return __(config('filament-mails.navigation.label') ?? 'Emails');
     }
 
     public static function getLabel(): ?string
     {
-        return __('Email');
+        return __(config('filament-mails.label') ?? 'Email');
     }
 
     public static function getNavigationIcon(): ?string
     {
-        return 'heroicon-o-envelope';
+        return config('filament-mails.navigation.icon') ?? 'heroicon-o-envelope';
     }
 
     public function getTitle(): string
     {
-        return __('Emails');
+        return __(config('filament-mails.title') ?? 'Emails');
     }
 
     public static function infolist(Infolist $infolist): Infolist
