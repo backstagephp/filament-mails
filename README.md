@@ -1,11 +1,11 @@
 # Filament Mails
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/vormkracht10/filament-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/filament-mails)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vormkracht10/filament-mails/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/vormkracht10/filament-mails/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/vormkracht10/filament-mails/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/vormkracht10/filament-mails/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/vormkracht10/filament-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/filament-mails)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/backstagephp/filament-mails.svg?style=flat-square)](https://packagist.org/packages/backstagephp/filament-mails)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/backstagephp/filament-mails/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/backstagephp/filament-mails/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/backstagephp/filament-mails/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/backstagephp/filament-mails/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/backstagephp/filament-mails.svg?style=flat-square)](https://packagist.org/packages/backstagephp/filament-mails)
 
-## Nice to meet you, we're [Vormkracht10](https://vormkracht10.nl)
+## Nice to meet you, we're [Backstage](https://backstagephp.com)
 
 Hi! We are a web development agency from Nijmegen in the Netherlands and we use Laravel for everything: advanced websites with a lot of bells and whistles and large web applications.
 
@@ -29,16 +29,16 @@ Filament Mails can collect everything you might want to track about the mails th
 
 Email as a protocol is very error prone. Succesfull email delivery is not guaranteed in any way, so it is best to monitor your email sending realtime. Using external services like Postmark, Mailgun or Resend email gets better by offering things like logging and delivery feedback, but it still needs your attention and can fail silently but horendously. Therefore we created Laravel Mails that fills in all the gaps.
 
-The package is built on top of [Laravel Mails](https://github.com/vormkracht10/laravel-mails).
+The package is built on top of [Laravel Mails](https://github.com/backstagephp/laravel-mails).
 
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/filament-mails.jpeg)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/filament-mails.jpeg)
 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require vormkracht10/filament-mails
+composer require backstage/filament-mails
 ```
 
 You can publish and run the migrations with:
@@ -64,7 +64,7 @@ php artisan vendor:publish --tag="filament-mails-views"
 Add the routes to the PanelProvider using the `routes()` method, like this:
 
 ```php
-use Vormkracht10\FilamentMails\Facades\FilamentMails;
+use Backstage\FilamentMails\Facades\FilamentMails;
 
 public function panel(Panel $panel): Panel
 {
@@ -76,7 +76,7 @@ public function panel(Panel $panel): Panel
 Then add the plugin to your `PanelProvider`
 
 ```php
-use Vormkracht10\FilamentMails\FilamentMailsPlugin;
+use Backstage\FilamentMails\FilamentMailsPlugin;
 
 public function panel(Panel $panel): Panel
 {
@@ -85,13 +85,45 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+### Security
+
+Using the `canManageMails()` method, you can define which users have access to the mail resources/pages. Here's a comprehensive example that includes additional logic for flexibility:
+
+```php
+use Backstage\FilamentMails\FilamentMailsPlugin;
+use Illuminate\Support\Facades\Auth;
+
+$panel
+    ->plugins([
+        FilamentMailsPlugin::make()
+            ->canManageMails(function () {
+                $user = Auth::user();
+
+                // Allow access for users with specific roles
+                if ($user->hasRole('admin') || $user->hasRole('supervisor')) {
+                    return true;
+                }
+
+                // Allow access for users with specific permissions
+                if ($user->hasPermissionTo('manage mails')) {
+                    return true;
+                }
+
+                // Restrict access for all other users
+                return false;
+            }),
+    ]);
+```
+
+This example demonstrates how to combine role-based and permission-based access control, providing a more robust and flexible approach to managing access to mail resources.
+
 ### Tenant middleware and route protection
 
 If you want to protect the mail routes with your (tenant) middleware, you can do so by adding the routes to the `tenantRoutes`:
 
 ```php
-use Vormkracht10\FilamentMails\FilamentMailsPlugin;
-use Vormkracht10\FilamentMails\Facades\FilamentMails;
+use Backstage\FilamentMails\FilamentMailsPlugin;
+use Backstage\FilamentMails\Facades\FilamentMails;
 
 public function panel(Panel $panel): Panel
 {
@@ -102,7 +134,7 @@ public function panel(Panel $panel): Panel
 ```
 
 > [!IMPORTANT]
-> For setting up the webhooks to register mail events, please look into the README of [Laravel Mails](https://github.com/vormkracht10/laravel-mails), the underlying package that powers this package.
+> For setting up the webhooks to register mail events, please look into the README of [Laravel Mails](https://github.com/backstagephp/laravel-mails), the underlying package that powers this package.
 
 ### Configuration
 
@@ -123,34 +155,34 @@ return [
 ### List with all sent emails and statistics
 
 The package provides a clear overview of all emails, including statistics and the ability to filter the data.
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mails-list.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mails-list.png)
 
 ### Resending emails
 
 You can resend emails to the same or another recipient(s). This is useful when your email has bounced and you want to resend it.
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mail-resend.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mail-resend.png)
 
 ### Information
 
 You can view all relevant information about the email, such as the subject, the body, the attachments, the from address, the to address(es), the cc address(es), the bcc address(es), the reply to address, metadata and much more.
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mail-sender-information.png)
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mail-statistics.png)
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mail-events.png)
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mail-attachments.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mail-sender-information.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mail-statistics.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mail-events.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mail-attachments.png)
 
 ### Preview email
 
 The package provides a preview of the email. This is useful to quickly check if the email is correct.
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mail-preview.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mail-preview.png)
 
 We also provide the raw HTML and plain text of the email.
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mail-raw-html.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mail-raw-html.png)
 
 ### Events
 
 The package also logs all events that are fired when an email is sent. This is useful to track the email sending process.
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/events-list.png)
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/event-details.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/events-list.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/event-details.png)
 
 ## Testing
 
@@ -172,7 +204,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
--   [Baspa](https://github.com/vormkracht10)
+-   [Baspa](https://github.com/backstagephp)
 -   [Mark van Eijk](https://github.com/markvaneijk)
 -   [All Contributors](../../contributors)
 

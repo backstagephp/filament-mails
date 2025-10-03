@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\FilamentMails\Testing;
+namespace Backstage\FilamentMails\Testing;
 
 use Livewire\Features\SupportTesting\Testable;
 

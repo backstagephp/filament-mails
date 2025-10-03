@@ -1,7 +1,8 @@
 <?php
 
-namespace Vormkracht10\FilamentMails\Tests;
+namespace Backstage\FilamentMails\Tests;
 
+use Backstage\FilamentMails\FilamentMailsServiceProvider;
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
 use Filament\Actions\ActionsServiceProvider;
@@ -16,7 +17,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use RyanChandler\BladeCaptureDirective\BladeCaptureDirectiveServiceProvider;
-use Vormkracht10\FilamentMails\FilamentMailsServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -25,7 +25,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Vormkracht10\\FilamentMails\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn (string $modelName) => 'Backstage\\FilamentMails\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 

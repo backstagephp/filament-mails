@@ -1,17 +1,21 @@
 <?php
 
-namespace Vormkracht10\FilamentMails\Resources;
+namespace Backstage\FilamentMails\Resources;
 
-use Filament\Infolists\Infolist;
+use Backstage\FilamentMails\FilamentMailsPlugin;
+use Backstage\FilamentMails\Resources\SuppressionResource\Pages\ListSuppressions;
+use Backstage\Mails\Enums\EventType;
+use Backstage\Mails\Enums\Provider;
+use Backstage\Mails\Events\MailUnsuppressed;
+use Backstage\Mails\Models\MailEvent;
+use Filament\Actions\Action;
+use Filament\Actions\ViewAction;
+use Filament\Panel;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Vormkracht10\FilamentMails\Resources\SuppressionResource\Pages\ListSuppressions;
-use Vormkracht10\Mails\Enums\EventType;
-use Vormkracht10\Mails\Enums\Provider;
-use Vormkracht10\Mails\Events\MailUnsuppressed;
-use Vormkracht10\Mails\Models\MailEvent;
 
 class SuppressionResource extends Resource
 {
@@ -19,7 +23,12 @@ class SuppressionResource extends Resource
 
     protected static bool $shouldRegisterNavigation = true;
 
-    public static function getSlug(): string
+    public static function canAccess(): bool
+    {
+        return FilamentMailsPlugin::get()->userCanManageMails();
+    }
+
+    public static function getSlug(?Panel $panel = null): string
     {
         return config('filament-mails.resources.mail')::getSlug() . '/suppressions';
     }
@@ -66,32 +75,36 @@ class SuppressionResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        $mailTable = config('mails.database.tables.mails');
+        $eventTable = config('mails.database.tables.events');
+
         return parent::getEloquentQuery()
-            ->join('mails', 'mail_events.mail_id', '=', 'mails.id')
+            ->from("$eventTable as events")
+            ->join("$mailTable as mails", 'events.mail_id', '=', 'mails.id')
             ->where(function ($query) {
-                $query->where('type', EventType::HARD_BOUNCED)
-                    ->orWhere('type', EventType::COMPLAINED);
+                $query->where('events.type', EventType::HARD_BOUNCED)
+                    ->orWhere('events.type', EventType::COMPLAINED);
             })
-            ->whereNull('unsuppressed_at')
-            ->whereIn('mails.to', function ($query) {
+            ->whereNull('events.unsuppressed_at')
+            ->whereIn('mails.to', function ($query) use ($eventTable) {
                 $query->select('to')
-                    ->from('mail_events')
+                    ->from($eventTable)
                     ->where('type', EventType::HARD_BOUNCED)
                     ->whereNull('unsuppressed_at')
                     ->groupBy('to');
             })
-            ->select('mail_events.*', 'mails.to')
+            ->select('events.*', 'mails.to')
             ->addSelect([
                 'has_complained' => MailEvent::select('m.id')
-                    ->from('mail_events AS me')
-                    ->leftJoin('mails As m', function ($join) {
+                    ->from("$eventTable as me")
+                    ->leftJoin("$mailTable as m", function ($join) {
                         $join->on('me.mail_id', '=', 'm.id')
                             ->where('me.type', '=', EventType::COMPLAINED);
                     })
                     ->take(1),
             ])
-            ->latest('occurred_at')
-            ->orderBy('occurred_at', 'desc');
+            ->latest('events.occurred_at')
+            ->orderBy('events.occurred_at', 'desc');
     }
 
     public static function table(Table $table): Table
@@ -99,12 +112,12 @@ class SuppressionResource extends Resource
         return $table
             ->defaultSort('occurred_at', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('to')
+                TextColumn::make('to')
                     ->label(__('Email address'))
                     ->formatStateUsing(fn ($record) => key(json_decode($record->to ?? [])))
                     ->searchable(['to']),
 
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->label(__('Reason'))
                     ->badge()
                     ->formatStateUsing(fn ($record) => $record->type->value == EventType::COMPLAINED->value ? 'Complained' : 'Bounced')
@@ -113,7 +126,7 @@ class SuppressionResource extends Resource
                         default => 'gray',
                     }),
 
-                Tables\Columns\TextColumn::make('occurred_at')
+                TextColumn::make('occurred_at')
                     ->label(__('Occurred At'))
                     ->dateTime('d-m-Y H:i')
                     ->since()
@@ -121,22 +134,22 @@ class SuppressionResource extends Resource
                     ->sortable()
                     ->searchable(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('unsuppress')
+            ->recordActions([
+                Action::make('unsuppress')
                     ->label(__('Unsuppress'))
                     ->action(function (MailEvent $record) {
                         event(new MailUnsuppressed(key($record->mail->to), $record->mail->mailer == 'smtp' && filled($record->mail->transport) ? $record->mail->transport : $record->mail->mailer, $record->mail->stream_id ?? null));
                     })
                     ->visible(fn ($record) => Provider::tryFrom($record->mail->mailer == 'smtp' && filled($record->mail->transport) ? $record->mail->transport : $record->mail->mailer)),
 
-                Tables\Actions\ViewAction::make()
+                ViewAction::make()
                     ->url(null)
                     ->modal()
                     ->slideOver()
                     ->label(__('View'))
                     ->hiddenLabel()
                     ->tooltip(__('View'))
-                    ->infolist(fn (Infolist $infolist) => EventResource::infolist($infolist)),
+                    ->schema(fn (Schema $schema) => EventResource::infolist($schema)),
             ]);
     }
 

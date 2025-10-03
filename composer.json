@@ -1,15 +1,15 @@
 {
-    "name": "vormkracht10/filament-mails",
+    "name": "backstage/filament-mails",
     "description": "View logged mails and events in a beautiful Filament UI.",
     "keywords": [
-        "vormkracht10",
+        "backstagephp",
         "laravel",
         "filament-mails"
     ],
-    "homepage": "https://github.com/vormkracht10/filament-mails",
+    "homepage": "https://github.com/backstagephp/filament-mails",
     "support": {
-        "issues": "https://github.com/vormkracht10/filament-mails/issues",
-        "source": "https://github.com/vormkracht10/filament-mails"
+        "issues": "https://github.com/backstagephp/filament-mails/issues",
+        "source": "https://github.com/backstagephp/filament-mails"
     },
     "license": "MIT",
     "authors": [
@@ -20,31 +20,27 @@
         }
     ],
     "require": {
-        "php": "^8.1",
-        "filament/filament": "^3.0",
+        "php": "^8.2",
+        "filament/filament": "^4.0",
         "spatie/laravel-package-tools": "^1.15.0",
-        "vormkracht10/laravel-mails": "^1.0"
+        "backstage/laravel-mails": "^2.0"
     },
     "require-dev": {
-        "laravel/pint": "^1.0",
-        "nunomaduro/collision": "^7.9",
-        "nunomaduro/larastan": "^2.0.1",
-        "orchestra/testbench": "^8.0",
-        "pestphp/pest": "^2.1",
-        "pestphp/pest-plugin-arch": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0"
+        "laravel/pint": "^1.16",
+        "nunomaduro/collision": "^8.8.0",
+        "orchestra/testbench": "^9.0|^10.0",
+        "pestphp/pest": "^3.7",
+        "pestphp/pest-plugin-arch": "^3.1.0",
+        "pestphp/pest-plugin-laravel": "^3.0"
     },
     "autoload": {
         "psr-4": {
-            "Vormkracht10\\FilamentMails\\": "src/"
+            "Backstage\\FilamentMails\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Vormkracht10\\FilamentMails\\Tests\\": "tests/"
+            "Backstage\\FilamentMails\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -65,13 +61,19 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Vormkracht10\\FilamentMails\\FilamentMailsServiceProvider"
+                "Backstage\\FilamentMails\\FilamentMailsServiceProvider"
             ],
             "aliases": {
-                "FilamentMails": "Vormkracht10\\FilamentMails\\Facades\\FilamentMails"
+                "FilamentMails": "Backstage\\FilamentMails\\Facades\\FilamentMails"
             }
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": {
+        "backstage/laravel-mails": {
+            "type": "vcs",
+            "url": "git@github.com:backstagephp/laravel-mails.git"
+        }
+    }
 }
