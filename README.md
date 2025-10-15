@@ -1,9 +1,9 @@
 # Filament Mails
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/backstagephp/filament-mails.svg?style=flat-square)](https://packagist.org/packages/backstagephp/filament-mails)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/backstage/filament-mails.svg?style=flat-square)](https://packagist.org/packages/backstage/filament-mails)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/backstagephp/filament-mails/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/backstagephp/filament-mails/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/backstagephp/filament-mails/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/backstagephp/filament-mails/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/backstagephp/filament-mails.svg?style=flat-square)](https://packagist.org/packages/backstagephp/filament-mails)
+[![Total Downloads](https://img.shields.io/packagist/dt/backstage/filament-mails.svg?style=flat-square)](https://packagist.org/packages/backstage/filament-mails)
 
 ## Nice to meet you, we're [Backstage](https://backstagephp.com)
 
