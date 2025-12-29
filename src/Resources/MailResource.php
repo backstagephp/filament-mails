@@ -453,15 +453,18 @@ class MailResource extends Resource
                 ->placeholder(__('Recipient(s)'))
                 ->label(__('To'))
                 ->required()
+                ->rules(['array'])
                 ->nestedRecursiveRules(['email:rfc,dns']),
             TagsInput::make('cc')
                 ->placeholder(__('Recipient(s)'))
                 ->label(__('CC'))
-                ->nestedRecursiveRules(['nullable', 'email:rfc,dns']),
+                ->rules(['nullable', 'array'])
+                ->nestedRecursiveRules(['email:rfc,dns']),
             TagsInput::make('bcc')
                 ->placeholder(__('Recipient(s)'))
                 ->label(__('BCC'))
-                ->nestedRecursiveRules(['nullable', 'email:rfc,dns']),
+                ->rules(['nullable', 'array'])
+                ->nestedRecursiveRules(['email:rfc,dns']),
         ];
     }
 
@@ -485,19 +488,22 @@ class MailResource extends Resource
                 ->label(__('Recipient(s)'))
                 ->default($toEmails)
                 ->required()
+                ->rules(['array'])
                 ->nestedRecursiveRules(['email:rfc,dns']),
 
             TagsInput::make('cc')
                 ->placeholder(__('CC'))
                 ->label(__('CC'))
                 ->default($ccEmails)
-                ->nestedRecursiveRules(['nullable', 'email:rfc,dns']),
+                ->rules(['nullable', 'array'])
+                ->nestedRecursiveRules(['email:rfc,dns']),
 
             TagsInput::make('bcc')
                 ->placeholder(__('BCC'))
                 ->label(__('BCC'))
                 ->default($bccEmails)
-                ->nestedRecursiveRules(['nullable', 'email:rfc,dns']),
+                ->rules(['nullable', 'array'])
+                ->nestedRecursiveRules(['email:rfc,dns']),
         ];
     }
 
