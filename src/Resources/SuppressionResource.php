@@ -86,12 +86,13 @@ class SuppressionResource extends Resource
                     ->orWhere('events.type', EventType::COMPLAINED);
             })
             ->whereNull('events.unsuppressed_at')
-            ->whereIn('mails.to', function ($query) use ($eventTable) {
-                $query->select('to')
-                    ->from($eventTable)
-                    ->where('type', EventType::HARD_BOUNCED)
-                    ->whereNull('unsuppressed_at')
-                    ->groupBy('to');
+            ->whereIn(\DB::raw('CAST(mails.to AS TEXT)'), function ($query) use ($eventTable, $mailTable) {
+                $query->select(\DB::raw('CAST(mails.to AS TEXT)'))
+                    ->from("$eventTable as events")
+                    ->join("$mailTable as mails", 'events.mail_id', '=', 'mails.id')
+                    ->where('events.type', EventType::HARD_BOUNCED)
+                    ->whereNull('events.unsuppressed_at')
+                    ->groupBy(\DB::raw('CAST(mails.to AS TEXT)'));
             })
             ->select('events.*', 'mails.to')
             ->addSelect([
